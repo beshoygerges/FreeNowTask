@@ -2,19 +2,21 @@ package com.freenow.service;
 
 import com.freenow.domainvalue.OnlineStatus;
 import com.freenow.dto.DriverDTO;
-import com.freenow.exception.DriversManagementException;
 
 import java.util.List;
 
+import static com.freenow.exception.DriversManagementException.ConstraintsViolationException;
+import static com.freenow.exception.DriversManagementException.EntityNotFoundException;
+
 public interface IDriverService {
 
-    DriverDTO findByStatus(Long driverId) throws DriversManagementException.EntityNotFoundException, DriversManagementException.EntityNotFoundException;
+    DriverDTO findById(Long driverId) throws EntityNotFoundException;
 
-    DriverDTO create(DriverDTO driverDO) throws DriversManagementException.ConstraintsViolationException, DriversManagementException.ConstraintsViolationException;
+    DriverDTO create(DriverDTO driverDTO) throws ConstraintsViolationException;
 
-    void delete(Long driverId) throws DriversManagementException.EntityNotFoundException, DriversManagementException.EntityNotFoundException;
+    void delete(Long driverId) throws EntityNotFoundException;
 
-    void updateLocation(long driverId, double longitude, double latitude) throws DriversManagementException.EntityNotFoundException, DriversManagementException.EntityNotFoundException;
+    void updateLocation(long driverId, double longitude, double latitude) throws EntityNotFoundException;
 
     List<DriverDTO> findByStatus(OnlineStatus onlineStatus);
 

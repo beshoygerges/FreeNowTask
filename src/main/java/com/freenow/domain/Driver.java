@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -14,10 +15,10 @@ import java.time.ZonedDateTime;
         name = "driver",
         uniqueConstraints = @UniqueConstraint(name = "uc_username", columnNames = {"username"})
 )
-public class DriverDomain {
+public class Driver implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -42,16 +43,19 @@ public class DriverDomain {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime dateCoordinateUpdated = ZonedDateTime.now();
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private OnlineStatus onlineStatus;
 
+    @OneToOne(mappedBy = "driver")
+    private Car car;
 
-    private DriverDomain() {
+
+    private Driver() {
     }
 
 
-    private DriverDomain(String username, String password) {
+    private Driver(String username, String password) {
         this.username = username;
         this.password = password;
         this.deleted = false;
@@ -60,7 +64,7 @@ public class DriverDomain {
         this.onlineStatus = OnlineStatus.OFFLINE;
     }
 
-    public DriverDomain(DriverDTO driverDTO) {
+    public Driver(DriverDTO driverDTO) {
         this(driverDTO.getUsername(), driverDTO.getPassword());
     }
 
@@ -115,4 +119,11 @@ public class DriverDomain {
         this.dateCoordinateUpdated = ZonedDateTime.now();
     }
 
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
 }

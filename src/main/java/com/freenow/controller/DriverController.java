@@ -21,15 +21,17 @@ import static com.freenow.exception.DriversManagementException.EntityNotFoundExc
 @RequestMapping("v1/drivers")
 public class DriverController {
 
-    @Autowired
-    private IDriverService driverService;
+    private final IDriverService driverService;
 
+    @Autowired
+    public DriverController(IDriverService driverService) {
+        this.driverService = driverService;
+    }
 
     @GetMapping("/{driverId}")
     public DriverDTO getDriver(@PathVariable long driverId) throws EntityNotFoundException {
-        return driverService.findByStatus(driverId);
+        return driverService.findById(driverId);
     }
-
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -37,12 +39,10 @@ public class DriverController {
         return driverService.create(driverDTO);
     }
 
-
     @DeleteMapping("/{driverId}")
     public void deleteDriver(@PathVariable long driverId) throws EntityNotFoundException {
         driverService.delete(driverId);
     }
-
 
     @PutMapping("/{driverId}")
     public void updateLocation(
@@ -50,7 +50,6 @@ public class DriverController {
             throws EntityNotFoundException {
         driverService.updateLocation(driverId, longitude, latitude);
     }
-
 
     @GetMapping
     public List<DriverDTO> findDrivers(@RequestParam OnlineStatus onlineStatus) {
