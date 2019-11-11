@@ -7,12 +7,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = FreeNowServerApplicantTestApplication.class)
-public class FreeNowServerApplicantTestApplicationTests
-{
+public class FreeNowServerApplicantTestApplicationTests {
 
     @Test
-    public void contextLoads()
-    {
+    public void contextLoads() {
     }
 
 }
