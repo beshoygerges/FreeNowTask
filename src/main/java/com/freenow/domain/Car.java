@@ -15,10 +15,13 @@ import java.time.ZonedDateTime;
         uniqueConstraints = @UniqueConstraint(name = "uc_licensePlate", columnNames = {"licensePlate"})
 )
 public class Car implements Serializable {
+
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime dateCreated = ZonedDateTime.now();
@@ -38,6 +41,7 @@ public class Car implements Serializable {
     @Enumerated(value = EnumType.STRING)
     private EngineType engineType;
 
+    @JsonIgnore
     @Column(nullable = false)
     private Boolean deleted = false;
 
@@ -127,5 +131,13 @@ public class Car implements Serializable {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public boolean isReserved() {
+        return getDriver() != null;
+    }
+
+    public boolean isMyDriver(Driver driver) {
+        return this.driver.equals(driver);
     }
 }

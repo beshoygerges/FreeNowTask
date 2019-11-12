@@ -126,4 +126,8 @@ public class Driver implements Serializable {
     public void setCar(Car car) {
         this.car = car;
     }
+
+    public boolean hasCar() {
+        return this.car != null;
+    }
 }

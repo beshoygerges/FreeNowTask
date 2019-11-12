@@ -1,5 +1,6 @@
 package com.freenow.service;
 
+import com.freenow.domain.Car;
 import com.freenow.domain.Driver;
 import com.freenow.domainvalue.GeoCoordinate;
 import com.freenow.domainvalue.OnlineStatus;
@@ -27,6 +28,8 @@ public class DefaultDriverService implements IDriverService {
     @Autowired
     private DriverRepository driverRepository;
 
+    @Autowired
+    private ICarService carService;
 
     /**
      * Selects a driver by id.
@@ -39,7 +42,6 @@ public class DefaultDriverService implements IDriverService {
     public DriverDTO findById(Long driverId) throws DriversManagementException.EntityNotFoundException {
         return new DriverDTO(findDriverChecked(driverId));
     }
-
 
     /**
      * Creates a new driver.
@@ -60,7 +62,6 @@ public class DefaultDriverService implements IDriverService {
         return new DriverDTO(driver);
     }
 
-
     /**
      * Deletes an existing driver by id.
      *
@@ -73,7 +74,6 @@ public class DefaultDriverService implements IDriverService {
         Driver driverDO = findDriverChecked(driverId);
         driverDO.setDeleted(true);
     }
-
 
     /**
      * Update the location for a driver.
@@ -90,7 +90,6 @@ public class DefaultDriverService implements IDriverService {
         driverDO.setCoordinate(new GeoCoordinate(latitude, longitude));
     }
 
-
     /**
      * Find all drivers by online state.
      *
@@ -105,10 +104,29 @@ public class DefaultDriverService implements IDriverService {
 
     }
 
+    @Transactional
+    @Override
+    public void releaseCar(Long driverId, Long carId) throws DriversManagementException.EntityNotFoundException, DriversManagementException.CarAlreadyInUseException, DriversManagementException.IllegalCarAccessException, DriversManagementException.CarNotAcquiredException {
+        Driver driver = findDriverChecked(driverId);
+        Car car = carService.findCarChecked(carId);
+        if (!car.isReserved()) throw new DriversManagementException.CarNotAcquiredException();
+        if (!car.isMyDriver(driver)) throw new DriversManagementException.IllegalCarAccessException();
+        car.setDriver(null);
+    }
+
+    @Transactional
+    @Override
+    public void acquireCar(Long driverId, Long carId) throws DriversManagementException.EntityNotFoundException, DriversManagementException.CarAlreadyInUseException, DriversManagementException.CarAcquirerLimitationException {
+        Driver driver = findDriverChecked(driverId);
+        Car car = carService.findCarChecked(carId);
+        if (driver.hasCar()) throw new DriversManagementException.CarAcquirerLimitationException();
+        if (car.isReserved()) throw new DriversManagementException.CarAlreadyInUseException();
+        car.setDriver(driver);
+    }
 
     private Driver findDriverChecked(Long driverId) throws DriversManagementException.EntityNotFoundException {
         return driverRepository.findById(driverId)
-                .orElseThrow(() -> new DriversManagementException.EntityNotFoundException("Could not find entity with id: " + driverId));
+                .orElseThrow(() -> new DriversManagementException.EntityNotFoundException(driverId));
     }
 
 }

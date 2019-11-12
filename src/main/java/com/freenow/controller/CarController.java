@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -42,7 +43,7 @@ public class CarController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CarDTO addCar(@RequestBody CarDTO carDTO) throws DriversManagementException.ConstraintsViolationException {
+    public CarDTO addCar(@Valid @RequestBody CarDTO carDTO) throws DriversManagementException.ConstraintsViolationException {
         return carService.addCar(carDTO);
     }
 

@@ -3,6 +3,7 @@ package com.freenow.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.freenow.domain.Car;
 import com.freenow.domain.Driver;
 import com.freenow.domainvalue.GeoCoordinate;
 
@@ -22,20 +23,20 @@ public class DriverDTO implements Serializable {
     @NotNull(message = "Password can not be null!")
     private String password;
 
-    private GeoCoordinate coordinate;
+    private Car car;
 
+    private GeoCoordinate coordinate;
 
     public DriverDTO() {
     }
-
 
     public DriverDTO(Driver driver) {
         this.id = driver.getId();
         this.coordinate = driver.getCoordinate();
         this.password = driver.getPassword();
         this.username = driver.getUsername();
+        this.car = driver.getCar();
     }
-
 
     @JsonProperty
     public Long getId() {
@@ -68,6 +69,14 @@ public class DriverDTO implements Serializable {
 
     public void setCoordinate(GeoCoordinate coordinate) {
         this.coordinate = coordinate;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
     }
 
     @Override

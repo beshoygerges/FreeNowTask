@@ -2,6 +2,8 @@ package com.freenow.service;
 
 import com.freenow.domainvalue.OnlineStatus;
 import com.freenow.dto.DriverDTO;
+import com.freenow.exception.DriversManagementException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,4 +22,8 @@ public interface IDriverService {
 
     List<DriverDTO> findByStatus(OnlineStatus onlineStatus);
 
+    @Transactional
+    void releaseCar(Long driverId, Long carId) throws EntityNotFoundException, DriversManagementException.CarAlreadyInUseException, DriversManagementException.IllegalCarAccessException, DriversManagementException.CarNotAcquiredException;
+
+    void acquireCar(Long driverId, Long carId) throws EntityNotFoundException, DriversManagementException.CarAlreadyInUseException, DriversManagementException.CarAcquirerLimitationException;
 }

@@ -1,5 +1,6 @@
 package com.freenow.service;
 
+import com.freenow.domain.Car;
 import com.freenow.dto.CarDTO;
 import com.freenow.exception.DriversManagementException;
 
@@ -18,4 +19,5 @@ public interface ICarService {
     List<CarDTO> fetchAllCars();
 
 
+    Car findCarChecked(Long id) throws DriversManagementException.EntityNotFoundException;
 }

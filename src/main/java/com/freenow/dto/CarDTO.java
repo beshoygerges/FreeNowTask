@@ -13,8 +13,8 @@ public class CarDTO implements Serializable {
     private String licensePlate;
     @NotNull
     private Integer seatCount;
-    @NotNull
     private Double rating;
+    @NotNull
     private EngineType engineType;
     @NotNull
     private String manufacturer;

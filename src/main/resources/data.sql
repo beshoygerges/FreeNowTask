@@ -40,3 +40,12 @@ values
  (8,
  'aced0005737200226f72672e737072696e676672616d65776f726b2e646174612e67656f2e506f696e7431b9e90ef11a4006020002440001784400017978704023000000000000404bfa1cac083127', now(), now(), false, 'ONLINE',
 'driver08pw', 'driver08');
+
+insert into car (id,date_created,license_plate,seat_count,manufacturer,engine_type,rating,deleted)
+values(1,now(),'1234',4,'germany','GAS',1.0,false);
+
+insert into car (id,date_created,license_plate,seat_count,manufacturer,engine_type,rating,deleted)
+values(2,now(),'56789',8,'brazil','ELECTRIC',5.2,false);
+
+insert into car (id,date_created,license_plate,seat_count,manufacturer,engine_type,rating,deleted)
+values(3,now(),'8547512',6,'USA','GAS',8.0,false);

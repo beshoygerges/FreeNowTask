@@ -25,7 +25,7 @@ public class CarService implements ICarService {
 
     @Override
     public CarDTO fetchById(Long id) throws DriversManagementException.EntityNotFoundException {
-        return new CarDTO(checkCarExistence(id));
+        return new CarDTO(findCarChecked(id));
     }
 
     @Override
@@ -42,14 +42,14 @@ public class CarService implements ICarService {
     @Transactional
     @Override
     public void updateCar(Double rating, Long id) throws DriversManagementException.EntityNotFoundException {
-        Car car = checkCarExistence(id);
+        Car car = findCarChecked(id);
         car.setRating(rating);
     }
 
     @Transactional
     @Override
     public void deleteCar(Long id) throws DriversManagementException.EntityNotFoundException {
-        Car car = checkCarExistence(id);
+        Car car = findCarChecked(id);
         car.setDeleted(true);
     }
 
@@ -60,7 +60,8 @@ public class CarService implements ICarService {
                 .collect(Collectors.toList());
     }
 
-    private Car checkCarExistence(Long id) throws DriversManagementException.EntityNotFoundException {
-        return carRepository.findById(id).orElseThrow(() -> new DriversManagementException.EntityNotFoundException("Could not find entity with id: " + id));
+    @Override
+    public Car findCarChecked(Long id) throws DriversManagementException.EntityNotFoundException {
+        return carRepository.findById(id).orElseThrow(() -> new DriversManagementException.EntityNotFoundException(id));
     }
 }

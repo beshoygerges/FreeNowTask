@@ -2,6 +2,7 @@ package com.freenow.controller;
 
 import com.freenow.domainvalue.OnlineStatus;
 import com.freenow.dto.DriverDTO;
+import com.freenow.exception.DriversManagementException;
 import com.freenow.service.IDriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,5 +55,15 @@ public class DriverController {
     @GetMapping
     public List<DriverDTO> findDrivers(@RequestParam OnlineStatus onlineStatus) {
         return driverService.findByStatus(onlineStatus);
+    }
+
+    @PutMapping("/{driverId}/cars/{carId}")
+    public void acquireCar(@PathVariable(name = "driverId") Long driverId, @PathVariable(name = "carId") Long carId) throws DriversManagementException.CarAlreadyInUseException, EntityNotFoundException, DriversManagementException.CarAcquirerLimitationException {
+        driverService.acquireCar(driverId, carId);
+    }
+
+    @DeleteMapping("/{driverId}/cars/{carId}")
+    public void releaseCar(@PathVariable(name = "driverId") Long driverId, @PathVariable(name = "carId") Long carId) throws DriversManagementException.CarAlreadyInUseException, EntityNotFoundException, DriversManagementException.IllegalCarAccessException, DriversManagementException.CarNotAcquiredException {
+        driverService.releaseCar(driverId, carId);
     }
 }
