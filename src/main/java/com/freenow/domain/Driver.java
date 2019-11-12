@@ -1,5 +1,7 @@
 package com.freenow.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.freenow.domainvalue.GeoCoordinate;
 import com.freenow.domainvalue.OnlineStatus;
 import com.freenow.dto.DriverDTO;
@@ -15,6 +17,7 @@ import java.time.ZonedDateTime;
         name = "driver",
         uniqueConstraints = @UniqueConstraint(name = "uc_username", columnNames = {"username"})
 )
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Driver implements Serializable {
 
     @Id
@@ -33,6 +36,7 @@ public class Driver implements Serializable {
     @NotNull(message = "Password can not be null!")
     private String password;
 
+    @JsonIgnore
     @Column(nullable = false)
     private Boolean deleted = false;
 

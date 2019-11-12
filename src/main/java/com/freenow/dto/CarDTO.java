@@ -1,5 +1,6 @@
 package com.freenow.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.freenow.domain.Car;
 import com.freenow.domainvalue.EngineType;
 
@@ -7,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CarDTO implements Serializable {
 
     @NotNull
