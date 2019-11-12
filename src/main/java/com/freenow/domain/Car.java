@@ -10,10 +10,6 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 
 @Entity
-@Table(
-        name = "car",
-        uniqueConstraints = @UniqueConstraint(name = "uc_licensePlate", columnNames = {"licensePlate"})
-)
 public class Car implements Serializable {
 
     @JsonIgnore

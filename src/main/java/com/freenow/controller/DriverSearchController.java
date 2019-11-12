@@ -33,7 +33,7 @@ public class DriverSearchController {
     }
 
     @GetMapping("/licensePlate")
-    public List<Driver> findByStatus(@RequestParam String licensePlate) {
+    public List<Driver> findByLicensePlate(@RequestParam String licensePlate) {
         return driverSearchService.fetchByLicensePlate(licensePlate);
     }
 

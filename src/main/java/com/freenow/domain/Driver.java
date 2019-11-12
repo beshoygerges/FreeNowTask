@@ -51,7 +51,7 @@ public class Driver implements Serializable {
     @Column(nullable = false)
     private OnlineStatus onlineStatus;
 
-    @OneToOne(mappedBy = "driver")
+    @OneToOne(mappedBy = "driver", fetch = FetchType.LAZY)
     private Car car;
 
 

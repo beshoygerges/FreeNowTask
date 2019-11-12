@@ -52,3 +52,9 @@ values(3,now(),'8547512',6,'USA','GAS',8.0,false);
 
 insert into car (id,date_created,license_plate,seat_count,manufacturer,engine_type,rating,deleted)
 values(4,now(),'547851245',6,'EGY','ELECTRIC',9.1,false);
+
+insert into car (id,date_created,license_plate,seat_count,manufacturer,engine_type,rating,deleted,driver_id)
+values(5,now(),'5478512',6,'FRA','ELECTRIC',9.1,false,1);
+
+insert into car (id,date_created,license_plate,seat_count,manufacturer,engine_type,rating,deleted,driver_id)
+values(6,now(),'5478512',6,'FRA','ELECTRIC',9.0,false,2);
