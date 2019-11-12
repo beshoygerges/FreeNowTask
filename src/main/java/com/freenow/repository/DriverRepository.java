@@ -18,8 +18,8 @@ public interface DriverRepository extends CrudRepository<Driver, Long> {
 
     List<Driver> findByUsername(String username);
 
-    List<Driver> findByCar_LicensePlate(String licensePlate);
+    List<Driver> findByCarLicensePlate(String licensePlate);
 
-    List<Driver> findByCar_Rating(Double rating);
+    List<Driver> findByCarRating(Double rating);
 
 }

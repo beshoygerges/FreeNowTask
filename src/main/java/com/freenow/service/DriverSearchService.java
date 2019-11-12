@@ -30,11 +30,11 @@ public class DriverSearchService implements IDriverSearchService {
 
     @Override
     public List<Driver> fetchByLicensePlate(String licensePlate) {
-        return driverRepository.findByCar_LicensePlate(licensePlate);
+        return driverRepository.findByCarLicensePlate(licensePlate);
     }
 
     @Override
     public List<Driver> fetchByRating(Double rating) {
-        return driverRepository.findByCar_Rating(rating);
+        return driverRepository.findByCarRating(rating);
     }
 }
