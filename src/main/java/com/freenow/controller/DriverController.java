@@ -57,13 +57,13 @@ public class DriverController {
         return driverService.findByStatus(onlineStatus);
     }
 
-    @PutMapping("/{driverId}/cars/{carId}")
-    public void acquireCar(@PathVariable(name = "driverId") Long driverId, @PathVariable(name = "carId") Long carId) throws DriversManagementException.CarAlreadyInUseException, EntityNotFoundException, DriversManagementException.CarAcquirerLimitationException {
+    @GetMapping("/acquire")
+    public void acquireCar(@RequestParam(name = "driverId") Long driverId, @RequestParam(name = "carId") Long carId) throws DriversManagementException.CarAlreadyInUseException, EntityNotFoundException, DriversManagementException.CarAcquirerLimitationException {
         driverService.acquireCar(driverId, carId);
     }
 
-    @DeleteMapping("/{driverId}/cars/{carId}")
-    public void releaseCar(@PathVariable(name = "driverId") Long driverId, @PathVariable(name = "carId") Long carId) throws DriversManagementException.CarAlreadyInUseException, EntityNotFoundException, DriversManagementException.IllegalCarAccessException, DriversManagementException.CarNotAcquiredException {
+    @GetMapping("/release")
+    public void releaseCar(@RequestParam(name = "driverId") Long driverId, @RequestParam(name = "carId") Long carId) throws DriversManagementException.CarAlreadyInUseException, EntityNotFoundException, DriversManagementException.IllegalCarAccessException, DriversManagementException.CarNotAcquiredException {
         driverService.releaseCar(driverId, carId);
     }
 }

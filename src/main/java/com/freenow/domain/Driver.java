@@ -7,6 +7,7 @@ import com.freenow.domainvalue.OnlineStatus;
 import com.freenow.dto.DriverDTO;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -23,6 +24,7 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 @EqualsAndHashCode
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Driver implements Serializable {
 
