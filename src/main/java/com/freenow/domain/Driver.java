@@ -6,9 +6,7 @@ import com.freenow.domainvalue.GeoCoordinate;
 import com.freenow.domainvalue.OnlineStatus;
 import com.freenow.dto.DriverDTO;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -21,8 +19,6 @@ import java.time.ZonedDateTime;
         name = "driver",
         uniqueConstraints = @UniqueConstraint(name = "uc_username", columnNames = {"username"})
 )
-@Getter
-@Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -50,21 +46,18 @@ public class Driver implements Serializable {
     private ZonedDateTime dateCoordinateUpdated = ZonedDateTime.now();
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
-    private OnlineStatus onlineStatus;
+    private OnlineStatus onlineStatus = OnlineStatus.OFFLINE;
     @OneToOne(mappedBy = "driver", fetch = FetchType.LAZY)
     private Car car;
 
-    private Driver(String username, String password) {
+    public Driver(String username, String password, GeoCoordinate coordinate) {
         this.username = username;
         this.password = password;
-        this.deleted = false;
-        this.coordinate = null;
-        this.dateCoordinateUpdated = null;
-        this.onlineStatus = OnlineStatus.OFFLINE;
+        this.coordinate = coordinate;
     }
 
-    public Driver(DriverDTO driverDTO) {
-        this(driverDTO.getUsername(), driverDTO.getPassword());
+    public static DriverBuilder newBuilder() {
+        return new DriverBuilder();
     }
 
     public void setCoordinate(GeoCoordinate coordinate) {
@@ -75,4 +68,45 @@ public class Driver implements Serializable {
     public boolean hasCar() {
         return this.car != null;
     }
+
+    public DriverDTO toDriverDTO() {
+        return DriverDTO.newBuilder()
+                .setCar(car)
+                .setCoordinate(coordinate)
+                .setPassword(password)
+                .setId(id)
+                .setUsername(username)
+                .build();
+    }
+
+    public void remove() {
+        this.deleted = true;
+    }
+
+    public static class DriverBuilder {
+
+        private String username;
+        private String password;
+        private GeoCoordinate coordinate;
+
+        public DriverBuilder setUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public DriverBuilder setPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public DriverBuilder setCoordinate(GeoCoordinate coordinate) {
+            this.coordinate = coordinate;
+            return this;
+        }
+
+        public Driver build() {
+            return new Driver(username, password, coordinate);
+        }
+    }
+
 }

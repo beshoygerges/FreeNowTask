@@ -25,38 +25,38 @@ public class CarService implements ICarService {
 
     @Override
     public CarDTO fetchById(Long id) throws DriversManagementException.EntityNotFoundException {
-        return new CarDTO(findCarChecked(id));
+        return findCarChecked(id).toCarDTO();
     }
 
     @Override
     public CarDTO addCar(CarDTO carDto) throws DriversManagementException.ConstraintsViolationException {
-        Car car = new Car(carDto);
+        Car car = carDto.toCar();
         try {
             car = carRepository.save(car);
         } catch (DataIntegrityViolationException e) {
             throw new DriversManagementException.ConstraintsViolationException(e.getMessage());
         }
-        return new CarDTO(car);
+        return car.toCarDTO();
     }
 
     @Transactional
     @Override
     public void updateCar(Double rating, Long id) throws DriversManagementException.EntityNotFoundException {
         Car car = findCarChecked(id);
-        car.setRating(rating);
+        car.increaseRating(rating);
     }
 
     @Transactional
     @Override
     public void deleteCar(Long id) throws DriversManagementException.EntityNotFoundException {
         Car car = findCarChecked(id);
-        car.setDeleted(true);
+        car.remove();
     }
 
     @Override
     public List<CarDTO> fetchAllCars() {
         return StreamSupport.stream(carRepository.findAll().spliterator(), false)
-                .map(CarDTO::new)
+                .map(car -> car.toCarDTO())
                 .collect(Collectors.toList());
     }
 

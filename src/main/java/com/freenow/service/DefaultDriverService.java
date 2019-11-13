@@ -40,7 +40,7 @@ public class DefaultDriverService implements IDriverService {
      */
     @Override
     public DriverDTO findById(Long driverId) throws DriversManagementException.EntityNotFoundException {
-        return new DriverDTO(findDriverChecked(driverId));
+        return findDriverChecked(driverId).toDriverDTO();
     }
 
     /**
@@ -53,13 +53,13 @@ public class DefaultDriverService implements IDriverService {
     @Override
     public DriverDTO create(DriverDTO driverDTO) throws ConstraintsViolationException {
 
-        Driver driver = new Driver(driverDTO);
+        Driver driver = driverDTO.toDriver();
         try {
             driver = driverRepository.save(driver);
         } catch (DataIntegrityViolationException e) {
             throw new ConstraintsViolationException(e.getMessage());
         }
-        return new DriverDTO(driver);
+        return driver.toDriverDTO();
     }
 
     /**
@@ -72,7 +72,7 @@ public class DefaultDriverService implements IDriverService {
     @Transactional
     public void delete(Long driverId) throws DriversManagementException.EntityNotFoundException {
         Driver driverDO = findDriverChecked(driverId);
-        driverDO.setDeleted(true);
+        driverDO.remove();
     }
 
     /**
@@ -99,7 +99,7 @@ public class DefaultDriverService implements IDriverService {
     @Override
     public List<DriverDTO> findByStatus(OnlineStatus onlineStatus) {
         return StreamSupport.stream(driverRepository.findByOnlineStatus(onlineStatus).spliterator(), false)
-                .map(DriverDTO::new)
+                .map(driver -> driver.toDriverDTO())
                 .collect(Collectors.toList());
 
     }
@@ -111,7 +111,7 @@ public class DefaultDriverService implements IDriverService {
         Car car = carService.findCarChecked(carId);
         if (!car.isReserved()) throw new DriversManagementException.CarNotAcquiredException();
         if (!car.isMyDriver(driver)) throw new DriversManagementException.IllegalCarAccessException();
-        car.setDriver(null);
+        car.removeDriver();
     }
 
     @Transactional
@@ -121,7 +121,7 @@ public class DefaultDriverService implements IDriverService {
         Car car = carService.findCarChecked(carId);
         if (driver.hasCar()) throw new DriversManagementException.CarAcquirerLimitationException();
         if (car.isReserved()) throw new DriversManagementException.CarAlreadyInUseException();
-        car.setDriver(driver);
+        car.acquireBy(driver);
     }
 
     private Driver findDriverChecked(Long driverId) throws DriversManagementException.EntityNotFoundException {

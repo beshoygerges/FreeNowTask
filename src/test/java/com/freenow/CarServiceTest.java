@@ -57,8 +57,7 @@ public class CarServiceTest {
     public void SaveNewCarPass() throws DriversManagementException.ConstraintsViolationException {
         when(carRepository.save(any())).thenReturn(new Car());
         Car car = new Car();
-        car.setLicensePlate("125478");
-        CarDTO dto = carService.addCar(new CarDTO(car));
+        CarDTO dto = carService.addCar(car.toCarDTO());
         Assert.assertNotEquals(null, dto);
     }
 
@@ -66,8 +65,7 @@ public class CarServiceTest {
     public void SaveExistCarThrows() throws DriversManagementException.ConstraintsViolationException {
         when(carRepository.save(any())).thenThrow(new DataIntegrityViolationException("primary key violation"));
         Car car = new Car();
-        car.setLicensePlate("125478");
-        carService.addCar(new CarDTO(car));
+        carService.addCar(car.toCarDTO());
     }
 
     @Test(expected = DriversManagementException.EntityNotFoundException.class)

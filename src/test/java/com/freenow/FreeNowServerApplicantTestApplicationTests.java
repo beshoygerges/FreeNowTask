@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 
 @RunWith(SpringRunner.class)
@@ -47,7 +48,7 @@ public class FreeNowServerApplicantTestApplicationTests {
         ResponseEntity<String> response = restTemplate.withBasicAuth("admin", "P@ssw0rd").getForEntity("http://localhost:" + port + "/v1/cars/1", String.class);
         assertEquals(HttpStatus.OK.value(), response.getStatusCode().value());
         CarDTO car = unMarshall(response.getBody(), CarDTO.class);
-        assertEquals(1, car.getId().longValue());
+        assertNotEquals(null, car);
     }
 
     @Test
