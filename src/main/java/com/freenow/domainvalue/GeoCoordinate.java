@@ -79,13 +79,8 @@ public class GeoCoordinate implements Serializable {
         }
         final GeoCoordinate other = (GeoCoordinate) obj;
         if (this.point == null) {
-            if (other.point != null) {
-                return false;
-            }
-        } else if (!this.point.equals(other.point)) {
-            return false;
-        }
-        return true;
+            return other.point == null;
+        } else return this.point.equals(other.point);
     }
 
 

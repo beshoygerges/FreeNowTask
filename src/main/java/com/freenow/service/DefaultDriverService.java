@@ -99,7 +99,7 @@ public class DefaultDriverService implements IDriverService {
     @Override
     public List<DriverDTO> findByStatus(OnlineStatus onlineStatus) {
         return StreamSupport.stream(driverRepository.findByOnlineStatus(onlineStatus).spliterator(), false)
-                .map(driver -> driver.toDriverDTO())
+                .map(Driver::toDriverDTO)
                 .collect(Collectors.toList());
 
     }

@@ -56,7 +56,7 @@ public class CarService implements ICarService {
     @Override
     public List<CarDTO> fetchAllCars() {
         return StreamSupport.stream(carRepository.findAll().spliterator(), false)
-                .map(car -> car.toCarDTO())
+                .map(Car::toCarDTO)
                 .collect(Collectors.toList());
     }
 
