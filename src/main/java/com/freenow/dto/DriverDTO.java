@@ -1,6 +1,6 @@
 package com.freenow.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.freenow.domain.Car;
@@ -12,13 +12,17 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+
 
 @NoArgsConstructor
 @EqualsAndHashCode
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonAutoDetect(fieldVisibility = ANY, getterVisibility = NONE, setterVisibility = NONE)
 public class DriverDTO implements Serializable {
 
-    @JsonIgnore
+    @JsonProperty
     private Long id;
     @JsonProperty
     @NotNull(message = "Username can not be null!")
@@ -26,9 +30,8 @@ public class DriverDTO implements Serializable {
     @JsonProperty
     @NotNull(message = "Password can not be null!")
     private String password;
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Car car;
-
     private GeoCoordinate coordinate;
 
     public DriverDTO(Long id, String username, String password, GeoCoordinate coordinate, Car car) {
@@ -39,23 +42,6 @@ public class DriverDTO implements Serializable {
         this.car = car;
     }
 
-    @JsonProperty
-    public Long getId() {
-        return id;
-    }
-
-    @JsonProperty
-    public Car getCar() {
-        return car;
-    }
-
-    public GeoCoordinate getCoordinate() {
-        return coordinate;
-    }
-
-    public void setCoordinate(GeoCoordinate coordinate) {
-        this.coordinate = coordinate;
-    }
 
     public static DriverDTOBuilder newBuilder() {
         return new DriverDTOBuilder();

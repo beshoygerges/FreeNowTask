@@ -1,6 +1,6 @@
 package com.freenow.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.freenow.domain.Car;
@@ -11,13 +11,17 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+
 
 @NoArgsConstructor
 @EqualsAndHashCode
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonAutoDetect(fieldVisibility = ANY, getterVisibility = NONE, setterVisibility = NONE)
 public class CarDTO implements Serializable {
 
-    @JsonIgnore
+    @JsonProperty
     private Long id;
     @JsonProperty
     @NotNull
@@ -43,10 +47,6 @@ public class CarDTO implements Serializable {
         this.licensePlate = licensePlate;
     }
 
-    @JsonProperty
-    public Long getId() {
-        return id;
-    }
 
     public static CarDTOBuilder newBuilder() {
         return new CarDTOBuilder();
