@@ -1,5 +1,6 @@
 package com.freenow.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.freenow.domain.Car;
@@ -16,15 +17,20 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CarDTO implements Serializable {
 
-    @JsonProperty
+    @JsonIgnore
     private Long id;
+    @JsonProperty
     @NotNull
     private String licensePlate;
+    @JsonProperty
     @NotNull
     private Integer seatCount;
+    @JsonProperty
     private Double rating;
+    @JsonProperty
     @NotNull
     private EngineType engineType;
+    @JsonProperty
     @NotNull
     private String manufacturer;
 
@@ -35,6 +41,11 @@ public class CarDTO implements Serializable {
         this.engineType = engineType;
         this.seatCount = seatCount;
         this.licensePlate = licensePlate;
+    }
+
+    @JsonProperty
+    public Long getId() {
+        return id;
     }
 
     public static CarDTOBuilder newBuilder() {

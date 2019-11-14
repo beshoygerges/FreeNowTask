@@ -52,9 +52,9 @@ public class DefaultDriverService implements IDriverService {
      */
     @Override
     public DriverDTO create(DriverDTO driverDTO) throws ConstraintsViolationException {
-
         Driver driver = driverDTO.toDriver();
         try {
+
             driver = driverRepository.save(driver);
         } catch (DataIntegrityViolationException e) {
             throw new ConstraintsViolationException(e.getMessage());

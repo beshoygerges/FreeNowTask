@@ -17,11 +17,13 @@ public class GeoCoordinate implements Serializable {
     private static final int MAX_LONGITUDE = 180;
     private static final int MIN_LONGITUDE = -180;
     @Column(name = "coordinate")
-    private final Point point;
+    private Point point;
+    private transient double latitude;
+    private transient double longitude;
 
 
     protected GeoCoordinate() {
-        this.point = null;
+        this.point = new Point(longitude, latitude);
     }
 
 
@@ -50,6 +52,15 @@ public class GeoCoordinate implements Serializable {
         return this.point;
     }
 
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+        this.point = new Point(longitude, latitude);
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+        this.point = new Point(longitude, latitude);
+    }
 
     @JsonProperty
     public double getLongitude() {
@@ -83,10 +94,5 @@ public class GeoCoordinate implements Serializable {
         } else return this.point.equals(other.point);
     }
 
-
-    @Override
-    public String toString() {
-        return this.point.toString();
-    }
 
 }

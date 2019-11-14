@@ -2,6 +2,7 @@ package com.freenow.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.freenow.domain.Car;
 import com.freenow.domain.Driver;
 import com.freenow.domainvalue.GeoCoordinate;
@@ -19,11 +20,15 @@ public class DriverDTO implements Serializable {
 
     @JsonIgnore
     private Long id;
+    @JsonProperty
     @NotNull(message = "Username can not be null!")
     private String username;
+    @JsonProperty
     @NotNull(message = "Password can not be null!")
     private String password;
+    @JsonIgnore
     private Car car;
+
     private GeoCoordinate coordinate;
 
     public DriverDTO(Long id, String username, String password, GeoCoordinate coordinate, Car car) {
@@ -34,18 +39,26 @@ public class DriverDTO implements Serializable {
         this.car = car;
     }
 
-    public static DriverDTOBuilder newBuilder() {
-        return new DriverDTOBuilder();
+    @JsonProperty
+    public Long getId() {
+        return id;
     }
 
-    @Override
-    public String toString() {
-        return "DriverDTO{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", coordinate=" + coordinate +
-                '}';
+    @JsonProperty
+    public Car getCar() {
+        return car;
+    }
+
+    public GeoCoordinate getCoordinate() {
+        return coordinate;
+    }
+
+    public void setCoordinate(GeoCoordinate coordinate) {
+        this.coordinate = coordinate;
+    }
+
+    public static DriverDTOBuilder newBuilder() {
+        return new DriverDTOBuilder();
     }
 
     public Driver toDriver() {
