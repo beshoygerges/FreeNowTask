@@ -1,5 +1,6 @@
 package com.freenow.domainvalue;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Preconditions;
@@ -17,56 +18,42 @@ public class GeoCoordinate implements Serializable {
     private static final int MAX_LONGITUDE = 180;
     private static final int MIN_LONGITUDE = -180;
     @Column(name = "coordinate")
-    private Point point;
+    private final Point point;
     private transient double latitude;
     private transient double longitude;
 
-
     protected GeoCoordinate() {
-        this.point = new Point(longitude, latitude);
-    }
+        this.point = null;
 
+    }
 
     /**
      * @param latitude  - y coordinate
      * @param longitude - x coordinate
      */
-    public GeoCoordinate(final double latitude, final double longitude) {
+    @JsonCreator
+    public GeoCoordinate(@JsonProperty("latitude") final double latitude, @JsonProperty("longitude") final double longitude) {
         Preconditions.checkArgument(latitude >= MIN_LATITUDE, "latitude is lower than min_latitude: " + MIN_LATITUDE);
         Preconditions.checkArgument(latitude <= MAX_LATITUDE, "latitude is higher than max_latitude: " + MAX_LATITUDE);
         Preconditions.checkArgument(longitude >= MIN_LONGITUDE, "longitude is lower than min_longitude: " + MIN_LONGITUDE);
         Preconditions.checkArgument(longitude <= MAX_LONGITUDE, "longitude is higher than max_longitude: " + MAX_LONGITUDE);
-
         this.point = new Point(longitude, latitude);
     }
-
 
     @JsonProperty
     public double getLatitude() {
         return this.point.getY();
     }
 
-
     @JsonIgnore
     public Point getPoint() {
         return this.point;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-        this.point = new Point(longitude, latitude);
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-        this.point = new Point(longitude, latitude);
     }
 
     @JsonProperty
     public double getLongitude() {
         return this.point.getX();
     }
-
 
     @Override
     public int hashCode() {
@@ -75,7 +62,6 @@ public class GeoCoordinate implements Serializable {
         result = prime * result + ((this.point == null) ? 0 : this.point.hashCode());
         return result;
     }
-
 
     @Override
     public boolean equals(final Object obj) {
@@ -93,6 +79,5 @@ public class GeoCoordinate implements Serializable {
             return other.point == null;
         } else return this.point.equals(other.point);
     }
-
 
 }
